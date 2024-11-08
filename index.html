@@ -1,19 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
-
     <title>Rubennrouge</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <h1>Hola mundo!</h1>
-    <p>Me llamo Rubén</p>
-    <p>Esta página se irá actualizando</p>
+    <div class="container">
+        <div class="profile-section">
+            <img src="/img/fotopfp.png" alt="Foto de perfil" class="profile-photo">
+            <h1>Hola, soy Rubén!</h1>
+        </div>
+
+        <div class="info-section main-info">
+            <p>Actualmente estudiando segundo de Desarrollo de Aplicaciones Web. Me encanta aprender nuevas tecnologías
+                y mejorar mis habilidades constantemente. Disfruto trabajando en proyectos desafiantes y colaborando con
+                otras personas para crear soluciones innovadoras y efectivas. En mi tiempo libre, me gusta explorar
+                nuevas herramientas de desarrollo y programar cosas que me llaman la atención.</p>
+        </div>
+
+        <div class="info-section additional-info">
+            <p>Tengo 19 años y llevo 2 años programando como desarollador web, tanto en Front End como en Back End, te
+                invito a visitar mi perfil de Github en los botones de la derecha e investigues mis proyectos
+                finalizados, los que están en curso y los que están por llegar!</p>
+        </div>
+
+        <div class="buttons-section">
+            <button onclick="window.location.href='https://github.com/Rubirojo05'">
+                <i class="fab fa-github icon"></i> Visita Mi GitHub!
+            </button>
+            <button>
+                <i class="fas fa-question icon"></i>
+            </button>
+            <button>
+                <i class="fas fa-question icon"></i>
+            </button>
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
 </body>
 
 </html>
