@@ -1,7 +1,7 @@
 // Firebase Configuración
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import { getFirestore, collection, query, orderBy, limit, getDoc, setDoc, doc, getDocs } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+import { getAuth, onAuthStateChanged, setPersistence, browserLocalPersistence, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyD2KJ0N0FksQJl658h-HdvkAO8CsLue1vw",
@@ -16,6 +16,11 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
+
+// Configurar persistencia de sesión
+setPersistence(auth, browserLocalPersistence).catch((error) => {
+    console.error("Error al configurar la persistencia de sesión:", error);
+});
 
 let userId = null;
 let saldo = 1500;
@@ -37,6 +42,7 @@ onAuthStateChanged(auth, async (user) => {
             return;
         }
 
+        // Obtener datos del ranking
         const userDoc = await getDoc(doc(db, "ranking", userId));
         if (userDoc.exists()) {
             saldo = userDoc.data().saldo;
@@ -47,31 +53,25 @@ onAuthStateChanged(auth, async (user) => {
             nombreUsuario = user.displayName || "Anónimo";
         }
 
-        localStorage.setItem('nombreUsuario', nombreUsuario);
         actualizarSaldo();
         obtenerRanking();
+
         document.getElementById('botonLogin').style.display = 'none';
         document.getElementById('botonGirar').disabled = false;
 
-        if (!nombreCambiado) {
-            document.querySelector('.cambiar-nombre').style.display = 'block';
-        } else {
-            document.querySelector('.cambiar-nombre').style.display = 'none';
-        }
-
+        document.querySelector('.cambiar-nombre').style.display = nombreCambiado ? 'none' : 'block';
         botonCerrarSesion.style.display = 'block';
     } else {
-        window.location.href = 'https://rubennrouge.tech/others/Mantenimiento/index.html';
+        window.location.href = '/others/Mantenimiento/index.html';
     }
 });
 
 // Evento de cerrar sesión
-botonCerrarSesion.addEventListener('click', () => {
-    signOut(auth).then(() => {
-        sessionStorage.clear();
-        localStorage.removeItem('nombreUsuario');
-        window.location.href = '/others/Mantenimiento/index.html';
-    }).catch((error) => console.error('Error al cerrar sesión:', error));
+botonCerrarSesion.addEventListener('click', async () => {
+    await signOut(auth);
+    sessionStorage.clear();
+    localStorage.clear();
+    window.location.href = '/others/Mantenimiento/index.html';
 });
 
 // Función para obtener un símbolo aleatorio
@@ -129,9 +129,7 @@ function mostrarAviso(texto) {
 
 // Actualizar saldo
 function actualizarSaldo() {
-    const saldoElemento = document.getElementById('saldo');
-    saldoElemento.textContent = `Saldo: ${saldo}€`;
-    document.getElementById('botonGirar').disabled = saldo <= 0;
+    document.getElementById('saldo').textContent = `Saldo: ${saldo}€`;
 }
 
 // Obtener ranking
