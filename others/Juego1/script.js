@@ -34,6 +34,15 @@ const botonCerrarSesion = document.getElementById('botonCerrarSesion');
 onAuthStateChanged(auth, async (user) => {
     if (user) {
         userId = user.uid;
+
+        // Verificar si el usuario está autorizado en la base de datos de mantenimiento
+        const userDocMantenimiento = await getDoc(doc(db, "authorizedUsers", userId));
+        if (!userDocMantenimiento.exists()) {
+            // Redirigir a mantenimiento si el usuario no está autorizado
+            window.location.href = '/others/Mantenimiento/index.html';
+            return;
+        }
+
         const userDoc = await getDoc(doc(db, "ranking", userId));
         if (userDoc.exists()) {
             saldo = userDoc.data().saldo;
@@ -73,6 +82,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.log('Autenticación exitosa');
                 const user = userCredential.user;
                 userId = user.uid;
+
+                // Verificar si el usuario está autorizado en la base de datos de mantenimiento
+                const userDocMantenimiento = await getDoc(doc(db, "authorizedUsers", userId));
+                if (!userDocMantenimiento.exists()) {
+                    // Redirigir a mantenimiento si el usuario no está autorizado
+                    window.location.href = 'https://rubennrouge.tech/others/Mantenimiento/index.html';
+                    return;
+                }
+
                 const userDoc = await getDoc(doc(db, "ranking", userId));
                 if (!userDoc.exists()) {
                     await agregarJugador(user.displayName || "Anónimo", saldo);
@@ -95,6 +113,15 @@ document.getElementById('botonLogin').addEventListener('click', async () => {
         const result = await signInWithPopup(auth, provider);
         const user = result.user;
         userId = user.uid;
+
+        // Verificar si el usuario está autorizado en la base de datos de mantenimiento
+        const userDocMantenimiento = await getDoc(doc(db, "authorizedUsers", userId));
+        if (!userDocMantenimiento.exists()) {
+            // Redirigir a mantenimiento si el usuario no está autorizado
+            window.location.href = 'https://rubennrouge.tech/others/Mantenimiento/index.html';
+            return;
+        }
+
         const userDoc = await getDoc(doc(db, "ranking", userId));
         if (userDoc.exists()) {
             saldo = userDoc.data().saldo;
