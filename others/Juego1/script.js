@@ -4,13 +4,13 @@ import { getFirestore, collection, query, orderBy, limit, getDoc, setDoc, doc, g
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
 const firebaseConfig = {
-    apiKey: "API_KEY",
-    authDomain: "AUTH_DOMAIN",
-    projectId: "PROJECT_ID",
-    storageBucket: "STORAGE_BUCKET",
-    messagingSenderId: "MESSAGING_SENDER_ID",
-    appId: "APP_ID",
-    measurementId: "MEASUREMENT_ID"
+    apiKey: "AIzaSyD2KJ0N0FksQJl658h-HdvkAO8CsLue1vw",
+    authDomain: "juego1-ca38d.firebaseapp.com",
+    projectId: "juego1-ca38d",
+    storageBucket: "juego1-ca38d.appspot.com",
+    messagingSenderId: "416427181010",
+    appId: "1:416427181010:web:eb9f244b8a504f6c713e0b",
+    measurementId: "G-60ZB046P0X"
 };
 
 const app = initializeApp(firebaseConfig);
