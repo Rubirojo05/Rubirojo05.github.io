@@ -18,9 +18,10 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 
 // Configurar persistencia de sesión
-setPersistence(auth, browserLocalPersistence).catch((error) => {
-    console.error("Error al configurar la persistencia de sesión:", error);
-});
+setPersistence(auth, browserLocalPersistence)
+    .catch((error) => {
+        console.error("Error al configurar la persistencia de sesión:", error);
+    });
 
 let userId = null;
 let saldo = 1500;
