@@ -1,6 +1,6 @@
 // Importa las funciones necesarias
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
 // Configuración de Firebase
@@ -19,18 +19,23 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+// Configurar persistencia de sesión
+setPersistence(auth, browserLocalPersistence).catch((error) => {
+    console.error("Error al configurar la persistencia de sesión:", error);
+});
+
 // Manejar el botón de acceso
 document.getElementById('testAccess').addEventListener('click', async () => {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
     try {
+        // Autenticar al usuario
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
-        // Verifica si el usuario está autorizado
+        // Verificar si el usuario está autorizado
         const userDoc = await getDoc(doc(db, "authorizedUsers", user.uid));
-
         if (userDoc.exists() && userDoc.data().authorized) {
             document.getElementById('status').textContent = "Acceso concedido. Redirigiendo...";
             setTimeout(() => {
@@ -38,9 +43,9 @@ document.getElementById('testAccess').addEventListener('click', async () => {
             }, 2000);
         } else {
             document.getElementById('status').textContent = "No tienes autorización para acceder.";
-            await signOut(auth);
         }
     } catch (error) {
         document.getElementById('status').textContent = "Credenciales incorrectas o error en la autenticación.";
+        console.error("Error de autenticación:", error);
     }
 });
