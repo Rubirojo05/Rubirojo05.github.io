@@ -101,7 +101,7 @@ body {
     border: none;
     cursor: pointer;
     transition: background-color 0.3s;
-    margin-bottom: 50px; /* Incrementar la separación entre botones */
+    margin-bottom: 30px; /* Incrementar la separación entre botones */
 }
 
 .boton-google:hover {
@@ -109,7 +109,7 @@ body {
 }
 
 .boton-girar {
-    margin-top: 40px;
+    margin-top: 20px;
     padding: 12px 25px;
     font-size: 1.3em;
     background: linear-gradient(to right, #d4af37, #b8860b);
