@@ -1,7 +1,7 @@
 // Firebase Configuración
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 import { getFirestore, collection, query, orderBy, limit, getDoc, setDoc, doc, getDocs } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyD2KJ0N0FksQJl658h-HdvkAO8CsLue1vw",
@@ -61,6 +61,23 @@ onAuthStateChanged(auth, async (user) => {
         document.getElementById('botonLogin').style.display = 'block';
         document.querySelector('.cambiar-nombre').style.display = 'none';
         botonCerrarSesion.style.display = 'none';
+    }
+});
+
+// Verificar autenticación con token de mantenimiento
+document.addEventListener('DOMContentLoaded', function () {
+    var authToken = localStorage.getItem('mantenimientoAuthToken');
+    if (authToken) {
+        signInWithCustomToken(auth, authToken)
+            .then((userCredential) => {
+                console.log('Autenticación exitosa');
+            })
+            .catch((error) => {
+                console.error('Error de autenticación:', error.message);
+                window.location.href = '/Mantenimiento/index.html';
+            });
+    } else {
+        window.location.href = '/Mantenimiento/index.html';
     }
 });
 
