@@ -5,7 +5,7 @@ import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from
 
 const firebaseConfig = {
     apiKey: "AIzaSyD2KJ0N0FksQJl658h-HdvkAO8CsLue1vw",
-    authDomain: "rubennrouge.tech",
+    authDomain: "juego1-ca38d.firebaseapp.com",
     projectId: "juego1-ca38d",
     storageBucket: "juego1-ca38d.appspot.com",
     messagingSenderId: "416427181010",
