@@ -21,29 +21,26 @@ const db = getFirestore(app);
 
 // Manejar el botón de acceso
 document.getElementById('testAccess').addEventListener('click', async () => {
-    // Obtén el correo y la contraseña desde los campos del formulario
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
     try {
-        // Inicia sesión con los valores proporcionados
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
         // Verifica si el usuario está autorizado
         const userDoc = await getDoc(doc(db, "authorizedUsers", user.uid));
 
-        if (userDoc.exists()) {
+        if (userDoc.exists() && userDoc.data().authorized) {
             document.getElementById('status').textContent = "Acceso concedido. Redirigiendo...";
-            localStorage.setItem('mantenimientoAuthToken', await user.getIdToken()); // Guardar token de autenticación en localStorage
             setTimeout(() => {
-                window.location.href = "/others/Juego1/index.html";
+                window.location.href = "https://rubennrouge.tech/others/Juego1/index.html";
             }, 2000);
         } else {
             document.getElementById('status').textContent = "No tienes autorización para acceder.";
             await signOut(auth);
         }
     } catch (error) {
-        document.getElementById('status').textContent = "No tienes autorización para acceder.";
+        document.getElementById('status').textContent = "Credenciales incorrectas o error en la autenticación.";
     }
 });
