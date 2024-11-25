@@ -31,11 +31,12 @@ let nombreCambiado = sessionStorage.getItem('nombreCambiado') === 'true';
 document.getElementById('botonGirar').disabled = true;
 const botonCerrarSesion = document.getElementById('botonCerrarSesion');
 
+// Verificar autenticación y autorización cuando el estado cambia
 onAuthStateChanged(auth, async (user) => {
     if (user) {
         userId = user.uid;
 
-        // Verificar si el usuario está autorizado
+        // Verificar si el usuario está autorizado en la base de datos
         const userDocMantenimiento = await getDoc(doc(db, "authorizedUsers", userId));
         if (!userDocMantenimiento.exists() || !userDocMantenimiento.data().authorized) {
             await signOut(auth);
@@ -54,15 +55,17 @@ onAuthStateChanged(auth, async (user) => {
             nombreUsuario = user.displayName || "Anónimo";
         }
 
+        // Actualizar el saldo y mostrar el ranking
         actualizarSaldo();
         obtenerRanking();
 
+        // Mostrar elementos y habilitar botón
         document.getElementById('botonLogin').style.display = 'none';
         document.getElementById('botonGirar').disabled = false;
-
         document.querySelector('.cambiar-nombre').style.display = nombreCambiado ? 'none' : 'block';
         botonCerrarSesion.style.display = 'block';
     } else {
+        // Si el usuario no está autenticado, redirigir al login de mantenimiento
         window.location.href = '/others/Mantenimiento/index.html';
     }
 });
@@ -75,13 +78,31 @@ botonCerrarSesion.addEventListener('click', async () => {
     window.location.href = '/others/Mantenimiento/index.html';
 });
 
+// Actualizar saldo en la interfaz
+function actualizarSaldo() {
+    document.getElementById('saldo').textContent = `Saldo: ${saldo}€`;
+}
+
+// Obtener y mostrar ranking
+async function obtenerRanking() {
+    const rankingContainer = document.getElementById('ranking');
+    const q = query(collection(db, "ranking"), orderBy("saldo", "desc"), limit(5));
+    const querySnapshot = await getDocs(q);
+
+    rankingContainer.innerHTML = '';
+    querySnapshot.forEach((doc, index) => {
+        const jugador = doc.data();
+        rankingContainer.innerHTML += `<div>${index + 1}. ${jugador.nombre}: ${jugador.saldo}€</div>`;
+    });
+}
+
 // Función para obtener un símbolo aleatorio
 function obtenerSimboloAleatorio() {
     const simbolos = ['🍒', '🍋', '🍊', '🍉', '🔔', '⭐'];
     return simbolos[Math.floor(Math.random() * simbolos.length)];
 }
 
-// Girar los carretes
+// Función para girar los carretes
 function girarCarretes() {
     if (saldo <= 0) {
         mostrarAviso("Saldo insuficiente. Recarga para seguir jugando.");
@@ -120,30 +141,12 @@ function determinarResultado([carrete1, carrete2, carrete3]) {
     actualizarSaldo();
 }
 
-// Mostrar aviso
+// Mostrar aviso en la pantalla
 function mostrarAviso(texto) {
     const aviso = document.getElementById('aviso');
     aviso.textContent = texto;
     aviso.classList.add("mostrar");
     setTimeout(() => aviso.classList.remove("mostrar"), 3000);
-}
-
-// Actualizar saldo
-function actualizarSaldo() {
-    document.getElementById('saldo').textContent = `Saldo: ${saldo}€`;
-}
-
-// Obtener ranking
-async function obtenerRanking() {
-    const rankingContainer = document.getElementById('ranking');
-    const q = query(collection(db, "ranking"), orderBy("saldo", "desc"), limit(5));
-    const querySnapshot = await getDocs(q);
-
-    rankingContainer.innerHTML = '';
-    querySnapshot.forEach((doc, index) => {
-        const jugador = doc.data();
-        rankingContainer.innerHTML += `<div>${index + 1}. ${jugador.nombre}: ${jugador.saldo}€</div>`;
-    });
 }
 
 // Agregar jugador al ranking
