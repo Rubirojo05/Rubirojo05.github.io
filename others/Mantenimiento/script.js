@@ -37,7 +37,7 @@ document.getElementById('testAccess').addEventListener('click', async () => {
             document.getElementById('status').textContent = "Acceso concedido. Redirigiendo...";
             localStorage.setItem('mantenimientoAuthToken', user.za); // Guardar token de autenticación en localStorage
             setTimeout(() => {
-                window.location.href = "https://rubennrouge.tech/others/Juego1/index.html";
+                window.location.href = "/others/Juego1/index.html";
             }, 2000);
         } else {
             document.getElementById('status').textContent = "No tienes autorización para acceder.";
