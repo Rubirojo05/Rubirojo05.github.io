@@ -35,11 +35,7 @@ document.getElementById('testAccess').addEventListener('click', async () => {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
-        // Obtener el token del usuario
-        const idToken = await user.getIdToken();
-        console.log('Token:', idToken);
-
-        // Verificar si el usuario está autorizado
+        // Obtener el documento de autorización
         const userDoc = await getDoc(doc(db, "authorizedUsers", user.uid));
         if (userDoc.exists() && userDoc.data().authorized) {
             document.getElementById('status').textContent = "Acceso concedido. Redirigiendo...";
