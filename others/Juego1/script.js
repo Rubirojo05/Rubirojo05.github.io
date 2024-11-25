@@ -74,10 +74,10 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .catch((error) => {
                 console.error('Error de autenticación:', error.message);
-                window.location.href = '/Mantenimiento/index.html';
+                window.location.href = 'others/Mantenimiento/index.html';
             });
     } else {
-        window.location.href = '/Mantenimiento/index.html';
+        window.location.href = 'others/Mantenimiento/index.html';
     }
 });
 
