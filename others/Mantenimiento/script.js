@@ -43,6 +43,6 @@ document.getElementById('testAccess').addEventListener('click', async () => {
             await signOut(auth);
         }
     } catch (error) {
-        document.getElementById('status').textContent = `Error: ${error.message}`;
+        document.getElementById('status').textContent = "No tienes autorización para acceder.";
     }
 });
