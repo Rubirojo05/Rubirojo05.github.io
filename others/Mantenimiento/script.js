@@ -20,9 +20,10 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 // Configurar persistencia de sesión
-setPersistence(auth, browserLocalPersistence).catch((error) => {
-    console.error("Error al configurar la persistencia de sesión:", error);
-});
+setPersistence(auth, browserLocalPersistence)
+    .catch((error) => {
+        console.error("Error al configurar la persistencia de sesión:", error);
+    });
 
 // Manejar el botón de acceso
 document.getElementById('testAccess').addEventListener('click', async () => {
