@@ -88,7 +88,12 @@ body {
 
 /* Ajustar la posición del texto de sesión iniciada */
 #sessionName {
-    margin-left: 20px; /* Separación del botón */
+    position: absolute;
+    top: 50px; /* Se aumenta el espacio debajo del botón */
+    left: 10px;
+    display: none;
+    color: #fff;
+    font-size: 1em;
 }
 
 /* Estilo para los botones */
@@ -192,6 +197,9 @@ body {
     color: white;
     font-size: 14px;
     padding: 10px 20px;
+    top: 10px;
+    left: 10px;
+    position: absolute;
     border: none;
     border-radius: 5px;
     cursor: pointer;
