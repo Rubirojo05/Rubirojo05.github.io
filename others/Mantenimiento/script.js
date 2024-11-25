@@ -35,7 +35,7 @@ document.getElementById('testAccess').addEventListener('click', async () => {
 
         if (userDoc.exists()) {
             document.getElementById('status').textContent = "Acceso concedido. Redirigiendo...";
-            localStorage.setItem('mantenimientoAuthToken', user.za); // Guardar token de autenticación en localStorage
+            localStorage.setItem('mantenimientoAuthToken', await user.getIdToken()); // Guardar token de autenticación en localStorage
             setTimeout(() => {
                 window.location.href = "/others/Juego1/index.html";
             }, 2000);
