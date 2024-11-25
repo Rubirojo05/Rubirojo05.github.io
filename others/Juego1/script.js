@@ -4,13 +4,13 @@ import { getFirestore, collection, query, orderBy, limit, getDoc, setDoc, doc, g
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyD2KJ0N0FksQJl658h-HdvkAO8CsLue1vw",
-    authDomain: "juego1-ca38d.firebaseapp.com",
-    projectId: "juego1-ca38d",
-    storageBucket: "juego1-ca38d.appspot.com",
-    messagingSenderId: "416427181010",
-    appId: "1:416427181010:web:eb9f244b8a504f6c713e0b",
-    measurementId: "G-60ZB046P0X"
+    apiKey: "API_KEY",
+    authDomain: "AUTH_DOMAIN",
+    projectId: "PROJECT_ID",
+    storageBucket: "STORAGE_BUCKET",
+    messagingSenderId: "MESSAGING_SENDER_ID",
+    appId: "APP_ID",
+    measurementId: "MEASUREMENT_ID"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -27,8 +27,9 @@ let nombreCambiado = sessionStorage.getItem('nombreCambiado') === 'true';
 // Desactivar botón de girar antes de iniciar sesión
 document.getElementById('botonGirar').disabled = true;
 
-// Referencia al botón de cerrar sesión
+// Referencia al botón de cerrar sesión y nombre de la sesión
 const botonCerrarSesion = document.getElementById('botonCerrarSesion');
+const sessionNameElement = document.getElementById('sessionName');
 
 // Verificar el estado de autenticación
 onAuthStateChanged(auth, async (user) => {
@@ -57,10 +58,13 @@ onAuthStateChanged(auth, async (user) => {
         }
 
         botonCerrarSesion.style.display = 'block';
+        sessionNameElement.style.display = 'block';
+        sessionNameElement.textContent = "Sesión Iniciada: " + nombreUsuario;
     } else {
         document.getElementById('botonLogin').style.display = 'block';
         document.querySelector('.cambiar-nombre').style.display = 'none';
         botonCerrarSesion.style.display = 'none';
+        sessionNameElement.style.display = 'none';
     }
 });
 
@@ -93,6 +97,8 @@ document.getElementById('botonLogin').addEventListener('click', async () => {
         }
 
         botonCerrarSesion.style.display = 'block';
+        sessionNameElement.style.display = 'block';
+        sessionNameElement.textContent = "Sesión Iniciada: " + nombreUsuario;
     } catch (error) {
         console.error("Error al iniciar sesión con Google:", error);
     }
