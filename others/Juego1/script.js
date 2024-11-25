@@ -167,7 +167,7 @@ function determinarResultado() {
     const simbolo3 = carrete3.textContent;
 
     if (simbolo1 === simbolo2 && simbolo2 === simbolo3) {
-        const premio = 200;
+        const premio = 500;
         saldo += premio;
         mostrarAviso(`¡Felicidades! Ganaste ${premio}€`);
     } else {
@@ -199,7 +199,7 @@ document.getElementById('botonCambiarNombre').addEventListener('click', async ()
             await agregarJugador(nombreUsuario, saldo);
             localStorage.setItem('nombreUsuario', nombreUsuario);
             document.querySelector('.cambiar-nombre').style.display = 'none';
-            mostrarAviso('Nombre cambiado exitosamente. Esta acción solo se puede hacer una vez, hazlo bien.');
+            mostrarAviso('Nombre cambiado exitosamente.');
         } else {
             mostrarAviso('Saldo insuficiente para cambiar el nombre.');
         }
