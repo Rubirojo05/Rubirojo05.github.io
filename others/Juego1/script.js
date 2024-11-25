@@ -71,6 +71,8 @@ document.addEventListener('DOMContentLoaded', function () {
         signInWithCustomToken(auth, authToken)
             .then((userCredential) => {
                 console.log('Autenticación exitosa');
+                // Redirigir al juego
+                window.location.href = 'https://rubennrouge.tech/others/Juego1/index.html';
             })
             .catch((error) => {
                 console.error('Error de autenticación:', error.message);
