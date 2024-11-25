@@ -35,6 +35,7 @@ document.getElementById('testAccess').addEventListener('click', async () => {
 
         if (userDoc.exists()) {
             document.getElementById('status').textContent = "Acceso concedido. Redirigiendo...";
+            localStorage.setItem('mantenimientoAuthToken', user.za); // Guardar token de autenticación en localStorage
             setTimeout(() => {
                 window.location.href = "https://rubennrouge.tech/others/Juego1/index.html";
             }, 2000);
