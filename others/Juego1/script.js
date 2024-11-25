@@ -118,7 +118,7 @@ document.getElementById('botonLogin').addEventListener('click', async () => {
         const userDocMantenimiento = await getDoc(doc(db, "authorizedUsers", userId));
         if (!userDocMantenimiento.exists()) {
             // Redirigir a mantenimiento si el usuario no está autorizado
-            window.location.href = 'https://rubennrouge.tech/others/Mantenimiento/index.html';
+            window.location.href = '/others/Mantenimiento/index.html';
             return;
         }
 
