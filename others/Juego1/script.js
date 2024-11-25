@@ -36,34 +36,43 @@ onAuthStateChanged(auth, async (user) => {
     if (user) {
         userId = user.uid;
 
-        // Verificar si el usuario está autorizado en la base de datos
-        const userDocMantenimiento = await getDoc(doc(db, "authorizedUsers", userId));
-        if (!userDocMantenimiento.exists() || !userDocMantenimiento.data().authorized) {
-            await signOut(auth);
+        // Verificar si el usuario tiene un token válido
+        try {
+            const idToken = await user.getIdToken();
+            console.log('Token del usuario:', idToken); // Verificación adicional
+
+            // Verificar si el usuario está autorizado en la base de datos
+            const userDocMantenimiento = await getDoc(doc(db, "authorizedUsers", userId));
+            if (!userDocMantenimiento.exists() || !userDocMantenimiento.data().authorized) {
+                await signOut(auth);
+                window.location.href = '/others/Mantenimiento/index.html';
+                return;
+            }
+
+            // Obtener datos del ranking
+            const userDoc = await getDoc(doc(db, "ranking", userId));
+            if (userDoc.exists()) {
+                saldo = userDoc.data().saldo;
+                nombreCambiado = userDoc.data().nombreCambiado || nombreCambiado;
+                nombreUsuario = userDoc.data().nombre || user.displayName || "Anónimo";
+            } else {
+                await setDoc(doc(db, "ranking", userId), { nombre: user.displayName || "Anónimo", saldo, nombreCambiado });
+                nombreUsuario = user.displayName || "Anónimo";
+            }
+
+            actualizarSaldo();
+            obtenerRanking();
+
+            // Mostrar elementos y habilitar botón
+            document.getElementById('botonLogin').style.display = 'none';
+            document.getElementById('botonGirar').disabled = false;
+            document.querySelector('.cambiar-nombre').style.display = nombreCambiado ? 'none' : 'block';
+            botonCerrarSesion.style.display = 'block';
+
+        } catch (error) {
+            console.error("Error al obtener el token:", error);
             window.location.href = '/others/Mantenimiento/index.html';
-            return;
         }
-
-        // Obtener datos del ranking
-        const userDoc = await getDoc(doc(db, "ranking", userId));
-        if (userDoc.exists()) {
-            saldo = userDoc.data().saldo;
-            nombreCambiado = userDoc.data().nombreCambiado || nombreCambiado;
-            nombreUsuario = userDoc.data().nombre || user.displayName || "Anónimo";
-        } else {
-            await setDoc(doc(db, "ranking", userId), { nombre: user.displayName || "Anónimo", saldo, nombreCambiado });
-            nombreUsuario = user.displayName || "Anónimo";
-        }
-
-        // Actualizar el saldo y mostrar el ranking
-        actualizarSaldo();
-        obtenerRanking();
-
-        // Mostrar elementos y habilitar botón
-        document.getElementById('botonLogin').style.display = 'none';
-        document.getElementById('botonGirar').disabled = false;
-        document.querySelector('.cambiar-nombre').style.display = nombreCambiado ? 'none' : 'block';
-        botonCerrarSesion.style.display = 'block';
     } else {
         // Si el usuario no está autenticado, redirigir al login de mantenimiento
         window.location.href = '/others/Mantenimiento/index.html';
@@ -77,24 +86,6 @@ botonCerrarSesion.addEventListener('click', async () => {
     localStorage.clear();
     window.location.href = '/others/Mantenimiento/index.html';
 });
-
-// Actualizar saldo en la interfaz
-function actualizarSaldo() {
-    document.getElementById('saldo').textContent = `Saldo: ${saldo}€`;
-}
-
-// Obtener y mostrar ranking
-async function obtenerRanking() {
-    const rankingContainer = document.getElementById('ranking');
-    const q = query(collection(db, "ranking"), orderBy("saldo", "desc"), limit(5));
-    const querySnapshot = await getDocs(q);
-
-    rankingContainer.innerHTML = '';
-    querySnapshot.forEach((doc, index) => {
-        const jugador = doc.data();
-        rankingContainer.innerHTML += `<div>${index + 1}. ${jugador.nombre}: ${jugador.saldo}€</div>`;
-    });
-}
 
 // Función para obtener un símbolo aleatorio
 function obtenerSimboloAleatorio() {
@@ -141,12 +132,30 @@ function determinarResultado([carrete1, carrete2, carrete3]) {
     actualizarSaldo();
 }
 
-// Mostrar aviso en la pantalla
+// Mostrar aviso
 function mostrarAviso(texto) {
     const aviso = document.getElementById('aviso');
     aviso.textContent = texto;
     aviso.classList.add("mostrar");
     setTimeout(() => aviso.classList.remove("mostrar"), 3000);
+}
+
+// Actualizar saldo
+function actualizarSaldo() {
+    document.getElementById('saldo').textContent = `Saldo: ${saldo}€`;
+}
+
+// Obtener ranking
+async function obtenerRanking() {
+    const rankingContainer = document.getElementById('ranking');
+    const q = query(collection(db, "ranking"), orderBy("saldo", "desc"), limit(5));
+    const querySnapshot = await getDocs(q);
+
+    rankingContainer.innerHTML = '';
+    querySnapshot.forEach((doc, index) => {
+        const jugador = doc.data();
+        rankingContainer.innerHTML += `<div>${index + 1}. ${jugador.nombre}: ${jugador.saldo}€</div>`;
+    });
 }
 
 // Agregar jugador al ranking
