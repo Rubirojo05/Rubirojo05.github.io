@@ -69,8 +69,14 @@ document.addEventListener('DOMContentLoaded', function () {
     var authToken = localStorage.getItem('mantenimientoAuthToken');
     if (authToken) {
         signInWithCustomToken(auth, authToken)
-            .then((userCredential) => {
+            .then(async (userCredential) => {
                 console.log('Autenticación exitosa');
+                const user = userCredential.user;
+                userId = user.uid;
+                const userDoc = await getDoc(doc(db, "ranking", userId));
+                if (!userDoc.exists()) {
+                    await agregarJugador(user.displayName || "Anónimo", saldo);
+                }
                 // Redirigir al juego
                 window.location.href = 'https://rubennrouge.tech/others/Juego1/index.html';
             })
