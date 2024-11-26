@@ -27,6 +27,8 @@ let nombreCambiado = sessionStorage.getItem('nombreCambiado') === 'true';
 // Desactivar botón de girar antes de iniciar sesión
 document.getElementById('botonGirar').disabled = true;
 
+document.getElementById('botonCambiarNombre').disabled = saldo < 1000; // Desactivar botón de cambiar nombre si el saldo es menor a 1000
+
 // Referencia al botón de cerrar sesión y nombre de la sesión
 const botonCerrarSesion = document.getElementById('botonCerrarSesion');
 const sessionNameElement = document.getElementById('sessionName');
@@ -115,11 +117,12 @@ botonCerrarSesion.addEventListener('click', () => {
     });
 });
 
-// Actualizar saldo
+// Actualizar saldo y estado del botón de cambiar nombre
 function actualizarSaldo() {
     const saldoElemento = document.getElementById('saldo');
     saldoElemento.textContent = `Saldo: ${saldo}€`;
     document.getElementById('botonGirar').disabled = saldo <= 0;
+    document.getElementById('botonCambiarNombre').disabled = saldo < 1000;
 }
 
 // Obtener ranking
