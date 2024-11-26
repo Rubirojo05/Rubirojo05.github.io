@@ -140,6 +140,13 @@ body {
     box-shadow: none;
 }
 
+#botonCambiarNombre:disabled {
+    background: #555;
+    color: #aaa;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
 /* Estilo para el ranking */
 .ranking {
     position: fixed;
