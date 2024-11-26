@@ -177,19 +177,42 @@ function girarCarretes() {
 
     botonGirar.disabled = true;
     mensaje.textContent = "Girando...";
+
     let giros = 20;
-    let intervalo = setInterval(() => {
+    let intervalo1 = setInterval(() => {
         carrete1.textContent = obtenerSimboloAleatorio();
-        carrete2.textContent = obtenerSimboloAleatorio();
-        carrete3.textContent = obtenerSimboloAleatorio();
         giros--;
         if (giros === 0) {
-            clearInterval(intervalo);
-            determinarResultado();
-            botonGirar.disabled = saldo <= 0;
-            mensaje.textContent = "¡Presiona 'Girar' para comenzar!";
+            clearInterval(intervalo1);
+            detenerCarrete2();
         }
     }, 100);
+
+    function detenerCarrete2() {
+        giros = 20;
+        let intervalo2 = setInterval(() => {
+            carrete2.textContent = obtenerSimboloAleatorio();
+            giros--;
+            if (giros === 0) {
+                clearInterval(intervalo2);
+                detenerCarrete3();
+            }
+        }, 100);
+    }
+
+    function detenerCarrete3() {
+        giros = 20;
+        let intervalo3 = setInterval(() => {
+            carrete3.textContent = obtenerSimboloAleatorio();
+            giros--;
+            if (giros === 0) {
+                clearInterval(intervalo3);
+                determinarResultado();
+                botonGirar.disabled = saldo <= 0;
+                mensaje.textContent = "¡Presiona 'Girar' para comenzar!";
+            }
+        }, 100);
+    }
 }
 
 // Determinar resultado de los carretes
