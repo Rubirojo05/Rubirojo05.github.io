@@ -8,10 +8,10 @@ function facil() {
     crearTablero(4, 0.2);
 }
 function medio() {
-    crearTablero(8, 0.2);
+    crearTablero(8, 0.17);
 }
 function dificil() {
-    crearTablero(12, 0.25);
+    crearTablero(12, 0.23);
 }
 function personalizado() {
     let tamaño;
@@ -130,7 +130,7 @@ function liberarCasilla(event) {
 
 // Liberar casillas adyacentes
 function liberarCasillasAdyacentes(row, col, liberadas) {
-    if (liberadas >= 10 || juegoTerminado) return; // Evitar recursión si el juego ha terminado
+    if (liberadas >= 15 || juegoTerminado) return; // Evitar recursión si el juego ha terminado
     for (let i = -1; i <= 1; i++) {
         for (let j = -1; j <= 1; j++) {
             const newRow = row + i;
