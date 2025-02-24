@@ -11,7 +11,7 @@ function medio() {
     crearTablero(8, 0.17);
 }
 function dificil() {
-    crearTablero(12, 0.23);
+    crearTablero(12, 0.22);
 }
 function personalizado() {
     let tamaño;
@@ -79,7 +79,7 @@ function dibujarTableroHTML(tamaño) {
     contenedor.style.gridTemplateColumns = `repeat(${tamaño}, 1fr)`; // Crear columna 
     contenedor.style.gridTemplateRows = `repeat(${tamaño}, 1fr)`; // Crear fila
     let contenido = "";
-    for (let i = 0; i < tamaño; i++) { 
+    for (let i = 0; i < tamaño; i++) {
         for (let j = 0; j < tamaño; j++) {
             contenido += `<div class='celda' data-row='${i}' data-col='${j}'></div>`; // Celda vacía por defecto
         }
@@ -112,7 +112,7 @@ function liberarCasilla(event) {
         mostrarBombas();
         celda.classList.add('mostrar-mina'); // Agregar estilo para mostrar la mina
         detenerTemporizador();
-        alert("¡Has perdido!");
+        alert("¡Ha explotado una mina 💥! Has perdido 😭​");
         juegoTerminado = true; // Bloquear interacciones
     } else if (!celda.classList.contains('liberada')) {
         celda.classList.add('liberada');
@@ -161,7 +161,7 @@ function liberarCasillasAdyacentes(row, col, liberadas) {
 function colocarBombas(tamaño, porcentajeBombas) {
     const totalBombas = Math.floor(tamaño * tamaño * porcentajeBombas); // Número total de bombas aleatorias
     const celdas = document.querySelectorAll('.celda');
-    let bombasColocadas = 0; 
+    let bombasColocadas = 0;
     while (bombasColocadas < totalBombas) { // Colocar bombas aleatorias
         const index = Math.floor(Math.random() * celdas.length); // Mientras no se hayan colocado todas las bombas
         const celda = celdas[index]; // Seleccionar una celda aleatoria
@@ -172,7 +172,7 @@ function colocarBombas(tamaño, porcentajeBombas) {
     }
     celdas.forEach(celda => {
         if (!celda.classList.contains('bomba')) {
-            const row = parseInt(celda.getAttribute('data-row')); 
+            const row = parseInt(celda.getAttribute('data-row'));
             const col = parseInt(celda.getAttribute('data-col'));
             const bombasCercanas = contarBombasCercanas(row, col, tamaño); // Contar bombas cercanas
             if (bombasCercanas > 0) { // Si hay bombas cercanas a la celda actual 
@@ -215,7 +215,7 @@ function mostrarBombas() {
 // Colocar o quitar bandera
 function colocarBandera(event) {
     if (juegoTerminado) return; // Desactiva click derecho si el juego ha terminado
-    event.preventDefault(); 
+    event.preventDefault();
     const celda = event.target;
 
     if (!celda.classList.contains('liberada')) {
@@ -234,18 +234,17 @@ function colocarBandera(event) {
     guardarPartida(); // Guardar
 }
 
+// ############# VICTORIA #############
+
 // Verificar victoria
 function verificarVictoria() {
     //Si el número de banderas acertadas es igual al número de bombas, el jugador ha ganado
-    if (numBanderasAcertadas === Math.floor(tamañoGlobal * tamañoGlobal * porcentajeBombasGlobal)) { 
+    if (numBanderasAcertadas === Math.floor(tamañoGlobal * tamañoGlobal * porcentajeBombasGlobal)) {
         detenerTemporizador();
-        alert("¡Has ganado!");
+        alert("¡Has ganado! 🏆​");
+        detenerTemporizador();
         juegoTerminado = true; // Bloquear interacciones
-        if (confirm("¿Volver a jugar?")) {
-            location.reload();
-        } else {
-            guardarPartida(); // Guardar el estado final antes de salir
-        }
+        guardarPartida();
     }
 }
 
@@ -294,8 +293,15 @@ function restaurarPartida() {
             if (celda) {
                 celda.classList.remove(...celda.classList); // Limpiar clases existentes
                 celda.classList.add(...celdaEstado.clases); // Restaurar clases
-                Object.keys(celdaEstado.dataset).forEach(key => { 
+                Object.keys(celdaEstado.dataset).forEach(key => {
                     celda.dataset[key] = celdaEstado.dataset[key];
+
+                    // Mostrar el número de bombas cercanas si la celda está liberada
+                    if (celda.classList.contains('liberada') && key === 'bombasCercanas' && celda.dataset.bombasCercanas > 0) {
+                        celda.textContent = celda.dataset.bombasCercanas;
+                    } else {
+                        celda.textContent = ''; // Limpiar contenido si no aplica
+                    }
                 });
             }
         });
