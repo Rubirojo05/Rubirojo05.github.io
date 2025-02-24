@@ -84,7 +84,7 @@ div {
 
 /* Estilos para las celdas que contienen una bandera */
 .bandera {
-    background-image: url('img/bandera.jpg'); /* Ruta de la imagen de la bandera */
+    background-image: url('bandera.jpg'); /* Ruta de la imagen de la bandera */
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -93,7 +93,7 @@ div {
 }
 
 .mostrar-mina {
-    background-image: url('img/mina.png'); /* Reemplaza 'mina.png' con la ruta de tu imagen */
+    background-image: url('mina.png'); /* Reemplaza 'mina.png' con la ruta de tu imagen */
     background-size: contain;
     background-repeat: no-repeat;
 }
