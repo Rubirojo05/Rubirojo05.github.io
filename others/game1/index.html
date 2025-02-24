@@ -1,25 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js"></script>
     <title>Busca Minas</title>
 </head>
-
 <body>
     <div class="contenido">
         <p>Selecciona una dificultad:</p>
         <div class="contbotones">
-            <button class="boton" id="facil" onclick=facil()>Fácil</button>
-            <button class="boton" id="medio" onclick=medio()>Medio</button>
-            <button class="boton" id="dificil" onclick=dificil()>Difícil</button>
-            <button class="boton" id="personalizado" onclick=personalizado()>Personalizado</button>
+            <button class="boton" id="facil" onclick="facil()">Fácil</button>
+            <button class="boton" id="medio" onclick="medio()">Medio</button>
+            <button class="boton" id="dificil" onclick="dificil()">Difícil</button>
+            <button class="boton" id="personalizado" onclick="personalizado()">Personalizado</button>
+        </div>
+        <div class="info">
+            <span id="contador-banderas">Banderas: 0</span>
+            <span id="temporizador">Tiempo: 0s</span>
         </div>
         <div class="contenedor" id="contenedor"></div>
     </div>
+    <script src="index.js"></script>
 </body>
-<script src="index.js"></script>
-
 </html>
