@@ -33,6 +33,18 @@ body {
     border: 1.5px solid #3753c1;
 }
 
+.celda.liberada {
+    background-color: lightgray;
+}
+
+/* .celda.bomba {
+    background-color: red;
+} */
+
+.celda.desactivada {
+    background-color: yellow;
+}
+
 .celda:hover {
     background-color: #20cbe6;
 }
@@ -41,4 +53,47 @@ div {
     font-size: 25px;
     text-align: center;
     font-family: 'Roboto Mono', monospace;
+}
+
+#facil, #medio, #dificil, #personalizado {
+    background-color: #3753c1;
+    color: white;
+    border: 3px solid black;
+    padding: 10px 20px;
+    margin: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-family: 'Roboto Mono', monospace;
+}
+
+#facil:hover, #medio:hover, #dificil:hover, #personalizado:hover {
+    background-color: #6adaeb;
+    color: black;
+}
+
+.info {
+    margin: 10px 0;
+    font-size: 18px;
+    text-align: center;
+}
+
+#contador-banderas, #temporizador {
+    margin: 5px;
+}
+
+/* Estilos para las celdas que contienen una bandera */
+.bandera {
+    background-image: url('img/bandera.jpg'); /* Ruta de la imagen de la bandera */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    color: transparent; /* Texto transparente para ocultar números en celdas con bandera */
+    cursor: pointer; /* Cambia el cursor al pasar sobre celdas con bandera */
+}
+
+.mostrar-mina {
+    background-image: url('img/mina.png'); /* Reemplaza 'mina.png' con la ruta de tu imagen */
+    background-size: contain;
+    background-repeat: no-repeat;
 }
